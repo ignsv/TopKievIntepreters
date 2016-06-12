@@ -1,0 +1,7 @@
+venv/*
+*.pyc
+static/img/*.png
+static/img/*.jpg
+static/img/*.jpeg
+.idea/*
+sample_db.sqlite

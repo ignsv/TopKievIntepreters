@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Contact us</title>
+	
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="shortcut icon" href="{{url_for('static', filename='img/general/'+'icon.png') }}" type="image/png">
+	<!--<link rel="stylesheet" href="stylesheets/style.css">-->
+	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+
+	<!--<link rel="stylesheet" href="stylesheets/font-awesome.min.css">-->
+	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='font-awesome.min.css') }}">
+
+	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='media.css') }}">
+	<!--<link rel="stylesheet" href="stylesheets/media.css">-->
+
+	<script src="static/jquery-2.1.4.min.js"></script>
+	<script src="static/jquery.slicknav.js"></script>
+	<script src="static/main.js"></script>
+</head>
+
+<body>
+	<nav id="top-nav">
+		<ul>
+			<li><a href="{{url_for('index')}}">Home</a></li>
+			<li id="services-nav" ><a>Services</a>
+				<ul id="services-ul">
+					<li><a href="{{url_for('business')}}">Business</a></li>
+					<li><a href="{{url_for('excursions')}}">Excursions</a></li>
+					<li><a href="{{url_for('entertainment')}}">Entertainment</a></li>
+					<li><a href="{{url_for('services')}}">All</a></li>
+				</ul>
+			</li>
+			<li><a href="{{url_for('translators')}}">Interpreters</a></li>
+			<li><a href="{{url_for('rates')}}">Rates</a></li>
+		</ul>
+		<div class="nav-right">
+			<span class="icon-logo"></span>
+			<div class="dropdown-signin">
+				{% if not current_user.is_authenticated() %}
+				<div class="label-login">
+					<a id="login-link" href="{{ url_for('security.login') }}"><span>Log in</span></a>
+				</div>
+				<a href="{{ url_for('security.login') }}"><span class="icon-signin"></span></a>
+				{% else %}
+				<div class="label-login">
+					{% if current_user.name -%}
+                	<span style="float:left;margin-right: 3px;">{{ current_user.name }} </span>
+                	{% else -%}
+                	<span>{{ current_user.email }} </span>
+                	{%- endif %}
+					<a id="login-link" href="{{ url_for('security.logout') }}"><span>Logout </span></a>
+				</div>
+				<a href="{{ url_for('security.logout') }}"><span class="icon-signin"></span></a>
+				{% endif %}
+			</div>
+		</div>
+	</nav>
+
+	<header>
+		{% include "security/_messages.html" %}
+		<span><h1>Top Kiev Interpreters</h1></span>
+		<ul class="cb-slideshow" data-type="background" data-speed="2.5">
+			<li>
+				<span>Image 01</span>
+			</li>
+			<li>
+				<span >Image 02</span>
+			</li>
+			<li>
+				<span >Image 03</span>
+			</li>
+		</ul>
+
+	</header>
+	<main>
+		<section id="contact-section">
+			<div class="wrapper">
+				<div class="info-block">
+					<h2>Contact us</h2>
+					<p>Call here anytime or contact us via mail:</p>
+					<h4>Phone number: <span>+38(096)656-11-89</span></h4>
+					<h4>Email: <span>topkievinterpreters@gmail.com</span></h4>
+					<h4>Address: <address>Kiev, Luteranskaya street, 30</address></h4>
+					<p class="bolder">Please do not reply to anyone contacting you when you are working with us! Unfortunately, today we have a lot of scammers walking through the web with their made-up stories, so please stay away from those or let us know!</p>
+					<div class="image"><img src="{{url_for('static', filename='img/general/'+'contacts-scam.png') }}" height="150" width="229" alt="scam protect yourself"></div>
+				</div>
+				<div class="map">
+					<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12085.887845467936!2d30.524652651441524!3d50.44585135948642!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40d4ce5531af8b07%3A0xbd6b693edcaff062!2z0LLRg9C7LiDQm9GO0YLQtdGA0LDQvdGB0YzQutCwLCAzMCwg0JrQuNGX0LIsINCj0LrRgNCw0LjQvdCw!5e0!3m2!1sru!2sru!4v1454292282692" width="100%" height="450" frameborder="0" style="border:solid 2px white" allowfullscreen></iframe>
+				</div>
+			</div>
+		</section>
+
+	</main>
+<footer>
+		<div class="footer-container">
+			<div class="site-map">
+				<nav>
+					<div class="col">
+						<h3><a href="{{url_for('services')}}">Services</a></h3>
+						<ul>
+							<li><a href="{{url_for('business')}}">Business</a></li>
+							<li><a href="{{url_for('excursions')}}">Excursions</a></li>
+							<li><a href="{{url_for('entertainment')}}">Entertainment</a></li>
+							<li><a href="{{url_for('services')}}">All</a></li>
+						</ul>
+					</div>
+					<div class="col">
+						<h3><a href="{{url_for('translators')}}">Interpreters</a></h3>
+						<ul>
+						</ul>
+					</div>
+					<div class="col">
+						<h3><a href="{{url_for('contact_us')}}">Contact us</a></h3>
+						<ul>
+							<li><a href="{{url_for('rates')}}">Rates</a></li>
+						</ul>
+					</div>
+				</nav>
+				
+			</div>
+			<div class="soc-net">
+					<i class="fa fa-paypal fa-2x"></i>
+					<i class="fa fa-facebook fa-2x"></i>					
+					<i class="fa fa-instagram fa-2x"></i>
+					<i class="fa fa-twitter fa-2x"></i>
+			</div>
+			<div class="image"><img src="{{url_for('static', filename='img/general/'+'PayPal.png') }}" alt=""></div>
+			<div class="image"><img class="for-center" src="{{url_for('static', filename='img/general/'+'rates100.png') }}" alt=""></div>
+			<div class="bot"><i class="fa fa-copyright"></i> 2016
+			<br/>
+			<a href="#" class="top">Back to top</a>
+
+			</div>
+		</div>
+		<address></address>	
+	</footer>
+</body>
+
+
+</html>

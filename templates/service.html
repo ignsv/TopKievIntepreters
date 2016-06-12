@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{{service.name}}</title>
+
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="shortcut icon" href="{{url_for('static', filename='img/general/'+'icon.png') }}" type="image/png">
+
+	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='font-awesome.min.css') }}">
+	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='media.css') }}">
+
+	<script src="{{url_for('static', filename='jquery-2.1.4.min.js')}}"></script>
+	<script src="{{url_for('static', filename='jquery.slicknav.js')}}"></script>
+	<script src="{{url_for('static', filename='main.js')}}"></script>
+	<script src="{{url_for('static', filename='jquery.fancybox.pack.js')}}"></script>
+	<script src="{{url_for('static', filename='jquery.jcarousel.js')}}"></script>
+	<script type="text/javascript" src="{{url_for('static', filename='script_service.js')}}"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$(".fancybox").fancybox();
+		});
+	</script>
+
+	<script type="text/javascript">
+		(function($) {
+			$(function() {
+				$('.jcarousel').jcarousel();
+				$('.jcarousel-control-prev')
+					.on('jcarouselcontrol:active', function() {
+						 $(this).removeClass('inactive');
+					})
+					.on('jcarouselcontrol:inactive', function() {
+						 $(this).addClass('inactive');
+					})
+					.jcarouselControl({
+						 target: '-=1'
+					});
+
+				$('.jcarousel-control-next')
+					.on('jcarouselcontrol:active', function() {
+						$(this).removeClass('inactive');
+					})
+					.on('jcarouselcontrol:inactive', function() {
+						$(this).addClass('inactive');
+					})
+					.jcarouselControl({
+						target: '+=1'
+					});
+
+				$('.jcarousel')
+					.on('jcarousel:create jcarousel:reload', function() {
+						var element = $(this),
+							width = element.innerWidth();
+						if (width > 500) {
+							width = width / 3;
+						} else if (width > 200) {
+							width = width / 2;
+						}
+						element.jcarousel('items').css('width', width + 'px');
+					});
+
+				$('.jcarousel-pagination')
+					.on('jcarouselpagination:active', 'a', function() {
+						$(this).addClass('active');
+					})
+					.on('jcarouselpagination:inactive', 'a', function() {
+						$(this).removeClass('active');
+					})
+				.jcarouselPagination();
+			});
+		})(jQuery);
+	</script>
+
+</head>
+
+<body service="{{service.slug}}" >
+	<nav id="top-nav">
+		<ul>
+			<li><a href="{{url_for('index')}}">Home</a></li>
+			<li id="services-nav" ><a>Services</a>
+				<ul id="services-ul">
+					<li><a href="{{url_for('business')}}">Business</a></li>
+					<li><a href="{{url_for('excursions')}}">Excursions</a></li>
+					<li><a href="{{url_for('entertainment')}}">Entertainment</a></li>
+					<li><a href="{{url_for('services')}}">All</a></li>
+				</ul>
+			</li>
+			<li><a href="{{url_for('translators')}}">Interpreters</a></li>
+			<li><a href="{{url_for('rates')}}">Rates</a></li>
+		</ul>
+		<div class="nav-right">
+			<span class="icon-logo"></span>
+			<div class="dropdown-signin">
+				{% if not current_user.is_authenticated() %}
+				<div class="label-login">
+					<a id="login-link" href="{{ url_for('security.login') }}"><span>Log in</span></a>
+				</div>
+				<a href="{{ url_for('security.login') }}"><span class="icon-signin"></span></a>
+				{% else %}
+				<div class="label-login">
+					{% if current_user.name -%}
+                	<span style="float:left;margin-right: 3px;">{{ current_user.name }} </span>
+                	{% else -%}
+                	<span>{{ current_user.email }} </span>
+                	{%- endif %}
+					<a id="login-link" href="{{ url_for('security.logout') }}"><span>Logout </span></a>
+				</div>
+				<a href="{{ url_for('security.logout') }}"><span class="icon-signin"></span></a>
+				{% endif %}
+			</div>
+		</div>
+	</nav>
+
+	<header>
+		{% include "security/_messages.html" %}
+		<span class='rt-notifications'></span>
+		<span><h1>TOP KIEV INTERPRETERS</h1></span>
+		<ul class="cb-slideshow" data-type="background" data-speed="2.5">
+			<li>
+				<span>Image 01</span>
+			</li>
+			<li>
+				<span>Image 02</span>
+			</li>
+			<li>
+				<span>Image 03</span>
+			</li>
+		</ul>
+
+	</header>
+	<main>
+		<section id="sep-service-section">
+			<div class="sep-service-info">
+				<div class="img-container">
+					{%if count>=4 %}
+					<a class="fancybox" rel="group" href="{{url_for('static', filename='img/'+service.images[0].path)}}" title="{{service.name}}"><img class="service-photo" src="{{url_for('static', filename='img/'+service.images[0].path)}}" height="350" width="350" alt="Main photo"></a>
+					<div class="additional-photos">
+						<div class="additional-photo-container"><a class="fancybox" rel="group" href="{{url_for('static', filename='img/'+service.images[1].path)}}" title="{{service.name}}"><img src="{{url_for('static', filename='img/'+service.images[1].path[:service.images[1].path.rfind('.')]+'_thumb'+service.images[1].path[service.images[1].path.rfind('.'):])}}" height="100" width="200" alt="{{service.name}}" /></a></div>
+						<div class="additional-photo-container"><a class="fancybox" rel="group" href="{{url_for('static', filename='img/'+service.images[2].path)}}" title="{{service.name}}"><img src="{{url_for('static', filename='img/'+service.images[2].path[:service.images[2].path.rfind('.')]+'_thumb'+service.images[2].path[service.images[2].path.rfind('.'):])}}" height="100" width="200" alt="{{service.name}}" /></a></div>
+						<div class="additional-photo-container"><a class="fancybox" rel="group" href="{{url_for('static', filename='img/'+service.images[3].path)}}" title="{{service.name}}"><img src="{{url_for('static', filename='img/'+service.images[3].path[:service.images[3].path.rfind('.')]+'_thumb'+service.images[3].path[service.images[3].path.rfind('.'):])}}" height="100" width="200" alt="{{service.name}}" /></a></div>	
+					</div>
+					{%endif%}
+					<div class="service-data">
+						<div class="type">
+							<span class="first-item">Type:</span>
+							<span>{{service.type}}</span>
+						</div>
+						<div class="rating">
+							<span class="first-item">Rating:</span>
+							<span id='likes-amount-field'>{{service.likes_amount}}</span>
+						</div>
+						{% if already_liked %}							
+						<i id='likes-amount-button'  style='color: #128DB4' class="fa fa-thumbs-up fa-2x"></i>
+						{% else %}	
+						<i id='likes-amount-button' class="fa fa-thumbs-up fa-2x"></i>
+						{% endif%}	
+					</div>
+				</div>
+				<div class="second-block">
+					<h2 class="title-name">{{service.name}}</h2>
+					<article>
+						{{service.description}}
+					</article>
+
+					<div class="booking-wrapper">
+						<h3>Booking Interpreters</h3>
+						<div class="jcarousel-wrapper">
+							<div class="jcarousel">
+								<ul>
+								{% for translator in service.translators %}
+									<li>
+										<div class="slide-wrapper">				{%if translator.images_amount>=1 %}
+											<img src="{{url_for('static', filename='img/'+translator.images[0].path[:translator.images[0].path.rfind('.')]+'_thumb'+translator.images[0].path[translator.images[0].path.rfind('.'):])}}" alt="">
+											{%endif%}
+											<div class="cover">
+												<h3>{{translator.first_name+' '+translator.last_name}}</h3>
+												<div class="xcover">
+													<div class="xtop">
+														<a href="{{url_for('translator', translatorname=translator.slug)}}" target="_blank"><i class="fa fa-search fa-2x"></i></a>
+													</div>
+													<div class="xbot">
+														<label class="btn-order modal-open-window" translator-id='{{translator.id}}' for="modal-{{loop.index}}">BOOK</label>
+													</div>
+												</div>
+											</div>
+										</div>
+
+										<!-- Модальное окно -->
+										<div id='translator-modal-{{translator.id}}' class="modal">
+											<input class="modal-open" id="modal-{{loop.index}}" type="checkbox" hidden>
+											<div class="modal-wrap" aria-hidden="true" role="dialog">
+												<label class="modal-overlay" for="modal-{{loop.index}}"></label>
+												<div class="modal-dialog">
+													<div class="modal-header">
+														<h2>Booking</h2>
+														<label class="btn-close" for="modal-{{loop.index}}" aria-hidden="true">×</label>
+													</div>
+													<div class="modal-body">
+														<div class="container-book">
+															<div class="avatar avatar-first">
+																{%if count>=1 %}
+																<img src="{{url_for('static', filename='img/'+service.images[0].path[:service.images[0].path.rfind('.')]+'_thumb'+service.images[0].path[service.images[0].path.rfind('.'):])}}" alt="">
+																{%endif%}
+															</div>
+															<div class="avatar avatar-last">
+																{%if translator.images_amount>=1 %}
+																<img src="{{url_for('static', filename='img/'+translator.images[0].path[:translator.images[0].path.rfind('.')]+'_thumb'+translator.images[0].path[translator.images[0].path.rfind('.'):])}}" alt="">
+																{%endif%}
+															</div>
+															<p>You are booking our interpreter <b>{{translator.first_name+' '+translator.last_name}}</b> for <b>{{service.name}}</b>. Please accept booking and we will contact you via email <b>{{ current_user.email }}</b></p>
+														</div>
+													</div>
+													<div class="modal-footer">
+														<button translator='{{translator.last_name}}' translator-id='{{translator.id}}' class="send-mail-button btn btn-primary" for="modal-{{loop.index}}">Accept</button>
+													</div>
+												</div>
+											</div>
+										</div>
+
+									</li>
+
+								{% endfor %}	
+								</ul>
+							</div>
+
+							<a href="#" class="jcarousel-control-prev">&lsaquo;</a>
+							<a href="#" class="jcarousel-control-next">&rsaquo;</a>
+
+						</div>			
+					</div>
+				</div>
+			</div>		
+		</section>
+		<section id="comments-section">
+			<div class="comments-wrapper">
+				<h2>Comments</h2>
+				<span class="comment-number">{{service.comments_amount}} comments</span>
+				<div>
+					<label class="label-message">Message: </label>
+					<textarea type="text" id='message-text' required maxlength="1000" class="form-message" name="message"> </textarea>
+					<input type="button" service-name='{{service.slug}}' id="submit" value="Submit" />
+				</div>
+				{% for post in service.posts_service %}
+				<div class="comment-wrap">
+					<span class="name">{{post.user.name}}</span>
+					<div class="comment">						
+						<span class="message">{{post.text}}</span>
+					</div>
+				</div>
+				{% endfor %}
+			
+			</div>
+		</section>
+
+	</main>
+	<footer>
+		<div class="footer-container">
+			<div class="site-map">
+				<nav>
+					<div class="col">
+						<h3><a href="{{url_for('services')}}">Services</a></h3>
+						<ul>
+							<li><a href="{{url_for('business')}}">Business</a></li>
+							<li><a href="{{url_for('excursions')}}">Excursions</a></li>
+							<li><a href="{{url_for('entertainment')}}">Entertainment</a></li>
+							<li><a href="{{url_for('services')}}">All</a></li>
+						</ul>
+					</div>
+					<div class="col">
+						<h3><a href="{{url_for('translators')}}">Interpreters</a></h3>
+						<ul>
+						</ul>
+					</div>
+					<div class="col">
+						<h3><a href="{{url_for('contact_us')}}">Contact us</a></h3>
+						<ul>
+							<li><a href="{{url_for('rates')}}">Rates</a></li>
+						</ul>
+					</div>
+				</nav>
+				
+			</div>
+			<div class="soc-net">
+					<i class="fa fa-paypal fa-2x"></i>
+					<i class="fa fa-facebook fa-2x"></i>					
+					<i class="fa fa-instagram fa-2x"></i>
+					<i class="fa fa-twitter fa-2x"></i>
+			</div>
+			<div class="image"><img src="{{url_for('static', filename='img/general/'+'PayPal.png') }}" alt=""></div>
+			<div class="image"><img class="for-center" src="{{url_for('static', filename='img/general/'+'rates100.png') }}" alt=""></div>
+			<div class="bot"><i class="fa fa-copyright"></i> 2016
+			<br/>
+			<a href="#" class="top">Back to top</a>
+
+			</div>
+		</div>
+		<address></address>	
+	</footer>
+</body>
+
+
+</html>

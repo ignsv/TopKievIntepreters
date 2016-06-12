@@ -14,9 +14,10 @@ To run this install requirements on your virtual environment
 ```
 pip install -r requirements.txt
 ```
-Then just execute
+Change *config.py* settings(mail, password hash etc) then just execute
 ```
 python run.py
 ```
-Check http://localhost:5000/ as common user or as admin(login *admin*, password *admin*). If you login as admin get http://localhost:5000/admin to test admin panel.
+Check http://localhost:5000/ as common user or as admin(email *admin*, password *admin*). If you login as admin get http://localhost:5000/admin to test admin panel.
+
 

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Top Kiev Interpreters</title>
+	
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="shortcut icon" href="{{url_for('static', filename='img/general/'+'icon.png') }}" type="image/png">
+
+<!--<link rel="stylesheet" href="stylesheets/style.css">-->
+	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+
+	<!--<link rel="stylesheet" href="stylesheets/font-awesome.min.css">-->
+	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='font-awesome.min.css') }}">
+
+	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='media.css') }}">
+	<!--<link rel="stylesheet" href="stylesheets/media.css">-->
+
+	<script src="{{url_for('static', filename='jquery-2.1.4.min.js')}}"></script>
+	<script src="{{url_for('static', filename='jquery.slicknav.js')}}"></script>
+	<script src="{{url_for('static', filename='main.js')}}"></script>
+
+
+	<script type="text/javascript" src="{{url_for('static', filename='script_review.js')}}"></script>
+</head>
+
+<body>
+	<nav id="top-nav">
+		<ul>
+			<li><a href="{{url_for('index')}}">Home</a></li>
+			<li id="services-nav" ><a>Services</a>
+				<ul id="services-ul">
+					<li><a href="{{url_for('business')}}">Business</a></li>
+					<li><a href="{{url_for('excursions')}}">Excursions</a></li>
+					<li><a href="{{url_for('entertainment')}}">Entertainment</a></li>
+					<li><a href="{{url_for('services')}}">All</a></li>
+				</ul>
+			</li>
+			<li><a href="{{url_for('translators')}}">Interpreters</a></li>
+			<li><a href="{{url_for('rates')}}">Rates</a></li>
+		</ul>
+		<div class="nav-right">
+			<span class="icon-logo"></span>
+			<div class="dropdown-signin">
+				{% if not current_user.is_authenticated() %}
+				<div class="label-login">
+					<a id="login-link" href="{{ url_for('security.login') }}"><span>Log in</span></a>
+				</div>
+				<a href="{{ url_for('security.login') }}"><span class="icon-signin"></span></a>
+				{% else %}
+				<div class="label-login">
+					{% if current_user.name -%}
+                	<span style="float:left;margin-right: 3px;">{{ current_user.name }} </span>
+                	{% else -%}
+                	<span>{{ current_user.email }} </span>
+                	{%- endif %}
+					<a id="login-link" href="{{ url_for('security.logout') }}"><span>Logout </span></a>
+				</div>
+				<a href="{{ url_for('security.logout') }}"><span class="icon-signin"></span></a>
+				{% endif %}
+			</div>
+		</div>
+	</nav>
+
+	<header>
+		{% include "security/_messages.html" %}
+		<span class='rt-notifications'></span>
+		<span><h1>Top Kiev Interpreters</h1></span>
+		<ul class="cb-slideshow" data-type="background" data-speed="2.5">
+			<li>
+				<span>Image 01</span>
+			</li>
+			<li>
+				<span >Image 02</span>
+			</li>
+			<li>
+				<span >Image 03</span>
+			</li>
+		</ul>
+
+	</header>
+	<main>
+		<section id="rates-section">
+			<div class="common-text">
+				<article>
+					<h2>RATES</h2>
+					<table>
+						<tr>
+							<td>Name</td>
+							<td>Description</td>
+							<td>Price</td>
+						</tr>
+						<tr>
+							<td>Local Kiev guide</td>
+							<td>With all the assistance included</td>
+							<td>$25/hr</td>
+						</tr>
+						<tr>
+							<td>Local Kiev guide</td>
+							<td>With all the assistance included</td>
+							<td>$200/day</td>
+						</tr>
+						<tr>
+							<td>Airport Pick-up</td>
+							<td>Elite car pick up from the airport with the translator</td>
+							<td>$50</td>
+						</tr>
+						<tr>
+							<td>Shopping assistance</td>
+							<td>Avoiding language barrier you will face here</td>
+							<td>$50</td>
+						</tr>
+						<tr>
+							<td>Leisure tour guide</td>
+							<td>Having a leisure guide at hand, who will arrange and will set up everything you need, with nightlife entertainment services included</td>
+							<td>$80</td>
+						</tr>
+						<tr>
+							<td colspan="3" class="td-title">Business translators</td>
+						</tr>
+						<tr>
+							<td>English / Russian Interpreter</td>
+							<td></td>
+							<td>$30/hr</td>
+						</tr>
+						<tr>
+							<td>Personal Assistant Services</td>
+							<td></td>
+							<td>$30/hr</td>
+						</tr>
+					</table>
+					<div class="image100"><img src="{{url_for('static', filename='img/general/'+'rates_guarant.png') }}" alt=""></div>
+					<div class="last-p">
+						* Prices can vary from month to month, so do not hesitate to contact us through the support center.	We have a discount system working, you will not have to pay for a translator or personal assistant the price multiplied by 10 if you will order him/her for 10 hours, that will be much cheaper, please call or write us to arrange all the financial moments.
+					</div>
+					<div class="image"><img src="{{url_for('static', filename='img/general/'+'rates_mark.png') }}" alt=""></div>
+				</article>
+			</div>
+		</section>
+		<section id="comments-section">
+			<div class="comments-wrapper">
+				<h2>Our reviews</h2>
+				<p>
+					We are trying to work hard and improve our operation every day, so please leave  your feedback, offers, desires, wishes for the site performance in the comments section below. Thanks.
+				</p>
+				<span class="comment-number">{{review_amounts}} reviews</span>
+					<label class="label-message">Message: </label>
+					<textarea type="text" id='message-text' class="form-message" required maxlength="1000" name="message"></textarea>
+					<input type="button" id="submit" value="Submit" />
+				{% for post in posts %}
+				<div class="comment-wrap">
+					<span class="name">{{post.user.name}}</span>
+					<div class="comment">						
+						<span class="message">{{post.text}}</span>
+					</div>
+				</div>
+				{% endfor %}
+			</div>
+		</section>
+
+	</main>
+	<footer>
+		<div class="footer-container">
+			<div class="site-map">
+				<nav>
+					<div class="col">
+						<h3><a href="{{url_for('services')}}">Services</a></h3>
+						<ul>
+							<li><a href="{{url_for('business')}}">Business</a></li>
+							<li><a href="{{url_for('excursions')}}">Excursions</a></li>
+							<li><a href="{{url_for('entertainment')}}">Entertainment</a></li>
+							<li><a href="{{url_for('services')}}">All</a></li>
+						</ul>
+					</div>
+					<div class="col">
+						<h3><a href="{{url_for('translators')}}">Interpreters</a></h3>
+						<ul>
+						</ul>
+					</div>
+					<div class="col">
+						<h3><a href="{{url_for('contact_us')}}">Contact us</a></h3>
+						<ul>
+							<li><a href="{{url_for('rates')}}">Rates</a></li>
+						</ul>
+					</div>
+				</nav>
+				
+			</div>
+			<div class="soc-net">
+					<i class="fa fa-paypal fa-2x"></i>
+					<i class="fa fa-facebook fa-2x"></i>					
+					<i class="fa fa-instagram fa-2x"></i>
+					<i class="fa fa-twitter fa-2x"></i>
+			</div>
+			<div class="image"><img src="{{url_for('static', filename='img/general/'+'PayPal.png') }}" alt=""></div>
+			<div class="image"><img class="for-center" src="{{url_for('static', filename='img/general/'+'rates100.png') }}" alt=""></div>
+			<div class="bot"><i class="fa fa-copyright"></i> 2016
+			<br/>
+			<a href="#" class="top">Back to top</a>
+
+			</div>
+		</div>
+		<address></address>	
+	</footer>
+</body>
+
+
+</html>

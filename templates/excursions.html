@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Excursion service</title>
+	
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="shortcut icon" href="{{url_for('static', filename='img/general/'+'icon.png') }}" type="image/png">
+
+	<!--<link rel="stylesheet" href="stylesheets/style.css">-->
+	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+
+	<!--<link rel="stylesheet" href="stylesheets/font-awesome.min.css">-->
+	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='font-awesome.min.css') }}">
+
+	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='media.css') }}">
+	<!--<link rel="stylesheet" href="stylesheets/media.css">-->
+
+	<script src="static/jquery-2.1.4.min.js"></script>
+	<script src="static/jquery.slicknav.js"></script>
+	<script src="static/main.js"></script>
+</head>
+
+<body>
+	<nav id="top-nav">
+		<ul>
+			<li><a href="{{url_for('index')}}">Home</a></li>
+			<li id="services-nav" ><a>Services</a>
+				<ul id="services-ul">
+					<li><a href="{{url_for('business')}}">Business</a></li>
+					<li><a href="{{url_for('excursions')}}">Excursions</a></li>
+					<li><a href="{{url_for('entertainment')}}">Entertainment</a></li>
+					<li><a href="{{url_for('services')}}">All</a></li>
+				</ul>
+			</li>
+			<li><a href="{{url_for('translators')}}">Interpreters</a></li>
+			<li><a href="{{url_for('rates')}}">Rates</a></li>
+		</ul>
+		<div class="nav-right">
+			<span class="icon-logo"></span>
+			<div class="dropdown-signin">
+				{% if not current_user.is_authenticated() %}
+				<div class="label-login">
+					<a id="login-link" href="{{ url_for('security.login') }}"><span>Log in</span></a>
+				</div>
+				<a href="{{ url_for('security.login') }}"><span class="icon-signin"></span></a>
+				{% else %}
+				<div class="label-login">
+					{% if current_user.name -%}
+                	<span style="float:left;margin-right: 3px;">{{ current_user.name }} </span>
+                	{% else -%}
+                	<span>{{ current_user.email }} </span>
+                	{%- endif %}
+					<a id="login-link" href="{{ url_for('security.logout') }}"><span>Logout </span></a>
+				</div>
+				<a href="{{ url_for('security.logout') }}"><span class="icon-signin"></span></a>
+				{% endif %}
+			</div>
+		</div>
+	</nav>
+
+	<header>
+		{% include "security/_messages.html" %}
+		<span><h1>Top Kiev Interpreters</h1></span>
+		<ul class="cb-slideshow" data-type="background" data-speed="2.5">
+			<li>
+				<span>Image 01</span>
+			</li>
+			<li>
+				<span>Image 02</span>
+			</li>
+			<li>
+				<span>Image 03</span>
+			</li>
+		</ul>
+
+	</header>
+	<main>
+		<section id="services-section">
+			{% for service in services %}
+			<div class="service-info">
+				<div class="img-container">
+					{%if service.images %}
+					<a href="{{url_for('services_service', servicename=service.slug)}}"><img class="service-photo" src="{{url_for('static', filename='img/'+service.images[0].path[:service.images[0].path.rfind('.')]+'_thumb'+service.images[0].path[service.images[0].path.rfind('.'):])}}" height="375" width="600" alt="{{service.name}}"></a>
+					{%endif%}
+					<div class="service-data">
+						<div class="type">
+							<span class="first-item">Type:</span>
+							<span>{{service.type}}</span>
+						</div>
+						<div class="rating">
+							<span class="first-item">Rating:</span>
+							<span>{{service.likes_amount}}</span>
+						</div>						
+						<i class="fa fa-thumbs-up fa-2x"></i>
+					</div>
+				</div>
+				<article>
+					<a class="title-link" href="{{url_for('services_service', servicename=service.slug)}}"><h2 class="title-name">{{service.name}}</h2></a>
+					{{service.description}} <a href="{{url_for('services_service', servicename=service.slug)}}">Read more...</a>
+				</article>
+
+			</div>
+			{% endfor %}
+			
+		</section>
+
+	</main>
+	<footer>
+		<div class="footer-container">
+			<div class="site-map">
+				<nav>
+					<div class="col">
+						<h3><a href="{{url_for('services')}}">Services</a></h3>
+						<ul>
+							<li><a href="{{url_for('business')}}">Business</a></li>
+							<li><a href="{{url_for('excursions')}}">Excursions</a></li>
+							<li><a href="{{url_for('entertainment')}}">Entertainment</a></li>
+							<li><a href="{{url_for('services')}}">All</a></li>
+						</ul>
+					</div>
+					<div class="col">
+						<h3><a href="{{url_for('translators')}}">Interpreters</a></h3>
+						<ul>
+						</ul>
+					</div>
+					<div class="col">
+						<h3><a href="{{url_for('contact_us')}}">Contact us</a></h3>
+						<ul>
+							<li><a href="{{url_for('rates')}}">Rates</a></li>
+						</ul>
+					</div>
+				</nav>
+				
+			</div>
+			<div class="soc-net">
+					<i class="fa fa-paypal fa-2x"></i>
+					<i class="fa fa-facebook fa-2x"></i>					
+					<i class="fa fa-instagram fa-2x"></i>
+					<i class="fa fa-twitter fa-2x"></i>
+			</div>
+			<div class="image"><img src="{{url_for('static', filename='img/general/'+'PayPal.png') }}" alt=""></div>
+			<div class="image"><img class="for-center" src="{{url_for('static', filename='img/general/'+'rates100.png') }}" alt=""></div>
+			<div class="bot"><i class="fa fa-copyright"></i> 2016
+			<br/>
+			<a href="#" class="top">Back to top</a>
+
+			</div>
+		</div>
+		<address></address>	
+	</footer>
+</body>
+
+
+</html>
